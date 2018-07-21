@@ -2,20 +2,23 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-public class snake extends Application {
+public class snake extends Application{
 
     Stage window;
     Scene canvas;
+    Pane pane;
 
     Circle snake;
 
@@ -23,17 +26,17 @@ public class snake extends Application {
     boolean down = false;
     boolean right = false;
     boolean left = false;
+    boolean isRunning = false;
 
     int snakeX, snakeY, foodX, foodY;
 
     int xVelocity = 20;
     int yVelocity = 20;
-    int prevX, prevY;
+    int prevX, prevY, range;
 
     ArrayList<TailPiece> tailPieces = new ArrayList<>();
 
     Timeline timeline = new Timeline();
-
 
     public static void main(String[] args) {
         launch(args);
@@ -49,18 +52,22 @@ public class snake extends Application {
     }
 
     private Pane pane(){
-        Pane pane = new Pane();
+        pane = new Pane();
 
-        int range = (800) + 1;
+        pane.setStyle("-fx-background-color: black;");
+
+        range = (800) + 1;
         snakeX = (int)(Math.random() * range) + 20;
         snakeY = (int)(Math.random() * range) + 20;
         foodX = (int)(Math.random() * range) + 20;
         foodY = (int)(Math.random() * range) + 20;
 
         snake = new Circle(snakeX, snakeY, 10);
+        snake.setFill(Color.GRAY);
         Food food = new Food(foodX, foodY);
         pane.getChildren().add(snake);
         pane.getChildren().add(food.getFood());
+        isRunning = true;
 
         tailPieces.add(new TailPiece());
         tailPieces.add(new TailPiece());
@@ -94,6 +101,8 @@ public class snake extends Application {
                 down = false;
                 right = false;
                 left = true;
+            } else if (e.getCode() == KeyCode.SPACE){
+                System.out.println("este boton es restart equis de");
             }
         });
 
@@ -107,6 +116,7 @@ public class snake extends Application {
 
                     moveTail();
 
+                    checkIntersect();
 
                 } else if (left){
                     prevX = (int)snake.getCenterX();
@@ -117,6 +127,7 @@ public class snake extends Application {
 
                     moveTail();
 
+                    checkIntersect();
                 } else if (up){
                     prevX = (int)snake.getCenterX();
                     prevY = (int)snake.getCenterY();
@@ -126,6 +137,7 @@ public class snake extends Application {
 
                     moveTail();
 
+                    checkIntersect();
                 } else if (down) {
                     prevX = (int)snake.getCenterX();
                     prevY = (int)snake.getCenterY();
@@ -135,6 +147,7 @@ public class snake extends Application {
 
                     moveTail();
 
+                    checkIntersect();
                 }
 
                 if(snake.intersects(food.getBounds())){
@@ -142,9 +155,6 @@ public class snake extends Application {
                     tailPieces.add(new TailPiece());
                     pane.getChildren().add(tailPieces.get(tailPieces.size()-1).getPiece());
                 }
-
-
-
             });
         timeline.getKeyFrames().add(frame);
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -157,4 +167,15 @@ public class snake extends Application {
             tailPieces.get(i).moveToNextPos(tailPieces.get(i-1).currX, tailPieces.get(i-1).currY);
         }
     }
+
+    public void checkIntersect(){
+        for (TailPiece piece : tailPieces){
+            if(snake.getCenterX() == piece.currX && snake.getCenterY() == piece.currY){
+                System.out.println("intersect");
+                timeline.stop();
+                piece.retCircle().setFill(Color.BLUE);
+            }
+        }
+    }
+
 }

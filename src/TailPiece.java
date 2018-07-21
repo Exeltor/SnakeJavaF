@@ -1,4 +1,8 @@
+import javafx.geometry.Bounds;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import java.awt.*;
 
 public class TailPiece {
 
@@ -11,6 +15,7 @@ public class TailPiece {
 
     public Circle getPiece(){
         piece = new Circle(10);
+        piece.setFill(Color.GRAY);
         return piece;
     }
 
@@ -19,6 +24,10 @@ public class TailPiece {
         currY = (int)piece.getCenterY();
         piece.setCenterX(prevX);
         piece.setCenterY(prevY);
+    }
+
+    public Circle retCircle(){
+        return piece;
     }
 
 }
