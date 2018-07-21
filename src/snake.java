@@ -21,6 +21,7 @@ public class snake extends Application{
     Pane pane;
 
     Circle snake;
+    Food food;
 
     boolean up = false;
     boolean down = false;
@@ -36,7 +37,11 @@ public class snake extends Application{
 
     ArrayList<TailPiece> tailPieces = new ArrayList<>();
 
+    KeyFrame frame;
+
     Timeline timeline = new Timeline();
+
+    Button ctrl;
 
     public static void main(String[] args) {
         launch(args);
@@ -64,7 +69,7 @@ public class snake extends Application{
 
         snake = new Circle(snakeX, snakeY, 10);
         snake.setFill(Color.GRAY);
-        Food food = new Food(foodX, foodY);
+        food = new Food(foodX, foodY);
         pane.getChildren().add(snake);
         pane.getChildren().add(food.getFood());
         isRunning = true;
@@ -74,39 +79,9 @@ public class snake extends Application{
         pane.getChildren().add(tailPieces.get(0).getPiece());
         pane.getChildren().add(tailPieces.get(1).getPiece());
 
-        Button ctrl = new Button();
-        ctrl.relocate(-200, -200);
-        pane.getChildren().add(ctrl);
+        addKeyHandler();
 
-        ctrl.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.UP && !down){
-                up = true;
-                down = false;
-                right = false;
-                left = false;
-
-            } else if (e.getCode() == KeyCode.DOWN && !up){
-                up = false;
-                down = true;
-                right = false;
-                left = false;
-            } else if (e.getCode() == KeyCode.RIGHT && !left){
-                up = false;
-                down = false;
-                right = true;
-                left = false;
-
-            } else if (e.getCode() == KeyCode.LEFT && !right){
-                up = false;
-                down = false;
-                right = false;
-                left = true;
-            } else if (e.getCode() == KeyCode.SPACE){
-                System.out.println("este boton es restart equis de");
-            }
-        });
-
-        KeyFrame frame = new KeyFrame(Duration.seconds(0.2), event -> {
+        frame = new KeyFrame(Duration.seconds(0.2), event -> {
                 if(right){
                     prevX = (int)snake.getCenterX();
                     prevY = (int)snake.getCenterY();
@@ -176,6 +151,72 @@ public class snake extends Application{
                 piece.retCircle().setFill(Color.BLUE);
             }
         }
+    }
+
+    public void restartGame(){
+        timeline.stop();
+        timeline.getKeyFrames().clear();
+
+        pane.getChildren().clear();
+
+        tailPieces.clear();
+
+        range = (800) + 1;
+        snakeX = (int)(Math.random() * range) + 20;
+        snakeY = (int)(Math.random() * range) + 20;
+        foodX = (int)(Math.random() * range) + 20;
+        foodY = (int)(Math.random() * range) + 20;
+
+        snake = new Circle(snakeX, snakeY, 10);
+        snake.setFill(Color.GRAY);
+        food = new Food(foodX, foodY);
+        pane.getChildren().add(snake);
+        pane.getChildren().add(food.getFood());
+
+        tailPieces.add(new TailPiece());
+        tailPieces.add(new TailPiece());
+        pane.getChildren().add(tailPieces.get(0).getPiece());
+        pane.getChildren().add(tailPieces.get(1).getPiece());
+
+        addKeyHandler();
+
+        timeline.getKeyFrames().add(frame);
+        timeline.play();
+
+    }
+
+    public void addKeyHandler(){
+        ctrl = new Button();
+        ctrl.relocate(-200, -200);
+        pane.getChildren().add(ctrl);
+
+        ctrl.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.UP && !down){
+                up = true;
+                down = false;
+                right = false;
+                left = false;
+
+            } else if (e.getCode() == KeyCode.DOWN && !up){
+                up = false;
+                down = true;
+                right = false;
+                left = false;
+            } else if (e.getCode() == KeyCode.RIGHT && !left){
+                up = false;
+                down = false;
+                right = true;
+                left = false;
+
+            } else if (e.getCode() == KeyCode.LEFT && !right){
+                up = false;
+                down = false;
+                right = false;
+                left = true;
+            } else if (e.getCode() == KeyCode.SPACE){
+                restartGame();
+            }
+        });
     }
 
 }
