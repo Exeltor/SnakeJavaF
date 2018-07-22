@@ -1,8 +1,6 @@
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -64,68 +62,11 @@ public class snake extends Application{
 
         pane.setStyle("-fx-background-color: black;");
 
-        range = (800) + 1;
-        snakeX = (int)(Math.random() * range) + 20;
-        snakeY = (int)(Math.random() * range) + 20;
-        foodX = (int)(Math.random() * range) + 20;
-        foodY = (int)(Math.random() * range) + 20;
-
         initializeFirstComponents();
 
         addKeyHandler();
 
-        frame = new KeyFrame(Duration.seconds(0.2), event -> {
-                if(right){
-                    prevX = (int)snake.getCenterX();
-                    prevY = (int)snake.getCenterY();
-                    snakeX+=xVelocity;
-                    snake.setCenterX(snakeX);
-                    tailPieces.get(0).moveToNextPos(prevX, prevY);
-
-                    moveTail();
-
-                    checkIntersect();
-
-                } else if (left){
-                    prevX = (int)snake.getCenterX();
-                    prevY = (int)snake.getCenterY();
-                    snakeX-=xVelocity;
-                    snake.setCenterX(snakeX);
-                    tailPieces.get(0).moveToNextPos(prevX, prevY);
-
-                    moveTail();
-
-                    checkIntersect();
-                } else if (up){
-                    prevX = (int)snake.getCenterX();
-                    prevY = (int)snake.getCenterY();
-                    snakeY-=yVelocity;
-                    snake.setCenterY(snakeY);
-                    tailPieces.get(0).moveToNextPos(prevX, prevY);
-
-                    moveTail();
-
-                    checkIntersect();
-                } else if (down) {
-                    prevX = (int)snake.getCenterX();
-                    prevY = (int)snake.getCenterY();
-                    snakeY+=yVelocity;
-                    snake.setCenterY(snakeY);
-                    tailPieces.get(0).moveToNextPos(prevX, prevY);
-
-                    moveTail();
-
-                    checkIntersect();
-                }
-
-                if(snake.intersects(food.getBounds())){
-                    food.relocateFood();
-                    tailPieces.add(new TailPiece());
-                    pane.getChildren().add(tailPieces.get(tailPieces.size()-1).getPiece());
-                    score += 100;
-                    scoreText.setText("Score: " + score);
-                }
-            });
+        frame = new KeyFrame(Duration.seconds(0.2), event -> movementExec());
         timeline.getKeyFrames().add(frame);
         timeline.setCycleCount(Timeline.INDEFINITE);
 
@@ -138,7 +79,7 @@ public class snake extends Application{
         }
     }
 
-    public void checkIntersect(){
+    private void checkIntersect(){
         for (TailPiece piece : tailPieces){
             if(snake.getCenterX() == piece.currX && snake.getCenterY() == piece.currY){
                 System.out.println("intersect");
@@ -148,39 +89,26 @@ public class snake extends Application{
         }
     }
 
-    public void restartGame(){
+    private void restartGame(){
+        //limpieza del campo
         timeline.stop();
         timeline.getKeyFrames().clear();
-
         pane.getChildren().clear();
-
         tailPieces.clear();
 
-        range = (800) + 1;
-        snakeX = (int)(Math.random() * range) + 20;
-        snakeY = (int)(Math.random() * range) + 20;
-        foodX = (int)(Math.random() * range) + 20;
-        foodY = (int)(Math.random() * range) + 20;
+        //inicializacion de los componentes
+        initializeFirstComponents();
 
-        snake = new Circle(snakeX, snakeY, 10);
-        snake.setFill(Color.GRAY);
-        food = new Food(foodX, foodY);
-        pane.getChildren().add(snake);
-        pane.getChildren().add(food.getFood());
-
-        tailPieces.add(new TailPiece());
-        tailPieces.add(new TailPiece());
-        pane.getChildren().add(tailPieces.get(0).getPiece());
-        pane.getChildren().add(tailPieces.get(1).getPiece());
-
+        //inicializacion del keylistener
         addKeyHandler();
 
+        //adicion de las frames y comienzo
         timeline.getKeyFrames().add(frame);
         timeline.play();
 
     }
 
-    public void addKeyHandler(){
+    private void addKeyHandler(){
         ctrl = new Button();
         ctrl.relocate(-200, -200);
         pane.getChildren().add(ctrl);
@@ -214,7 +142,14 @@ public class snake extends Application{
         });
     }
 
-    public void initializeFirstComponents(){
+    private void initializeFirstComponents(){
+        score = 0;
+        range = (800) + 1;
+        snakeX = (int)(Math.random() * range) + 20;
+        snakeY = (int)(Math.random() * range) + 20;
+        foodX = (int)(Math.random() * range) + 20;
+        foodY = (int)(Math.random() * range) + 20;
+
         snake = new Circle(snakeX, snakeY, 10);
         snake.setFill(Color.GRAY);
         food = new Food(foodX, foodY);
@@ -232,6 +167,59 @@ public class snake extends Application{
         scoreText.setX(30);
         scoreText.setY(750);
         pane.getChildren().add(scoreText);
+    }
+
+    private void movementExec(){        //ejecucion de comandos de direcciones
+        if(right){
+            prevX = (int)snake.getCenterX();
+            prevY = (int)snake.getCenterY();
+            snakeX+=xVelocity;
+            snake.setCenterX(snakeX);
+            tailPieces.get(0).moveToNextPos(prevX, prevY);
+
+            moveTail();
+
+            checkIntersect();
+
+        } else if (left){
+            prevX = (int)snake.getCenterX();
+            prevY = (int)snake.getCenterY();
+            snakeX-=xVelocity;
+            snake.setCenterX(snakeX);
+            tailPieces.get(0).moveToNextPos(prevX, prevY);
+
+            moveTail();
+
+            checkIntersect();
+        } else if (up){
+            prevX = (int)snake.getCenterX();
+            prevY = (int)snake.getCenterY();
+            snakeY-=yVelocity;
+            snake.setCenterY(snakeY);
+            tailPieces.get(0).moveToNextPos(prevX, prevY);
+
+            moveTail();
+
+            checkIntersect();
+        } else if (down) {
+            prevX = (int)snake.getCenterX();
+            prevY = (int)snake.getCenterY();
+            snakeY+=yVelocity;
+            snake.setCenterY(snakeY);
+            tailPieces.get(0).moveToNextPos(prevX, prevY);
+
+            moveTail();
+
+            checkIntersect();
+        }
+
+        if(snake.intersects(food.getBounds())){
+            food.relocateFood();
+            tailPieces.add(new TailPiece());
+            pane.getChildren().add(tailPieces.get(tailPieces.size()-1).getPiece());
+            score += 100;
+            scoreText.setText("Score: " + score);
+        }
     }
 
 }
