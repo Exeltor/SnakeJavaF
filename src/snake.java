@@ -9,6 +9,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -27,13 +29,14 @@ public class snake extends Application{
     boolean down = false;
     boolean right = false;
     boolean left = false;
-    boolean isRunning = false;
 
     int snakeX, snakeY, foodX, foodY;
 
     int xVelocity = 20;
     int yVelocity = 20;
     int prevX, prevY, range;
+    int score = 0;
+    Text scoreText;
 
     ArrayList<TailPiece> tailPieces = new ArrayList<>();
 
@@ -67,17 +70,7 @@ public class snake extends Application{
         foodX = (int)(Math.random() * range) + 20;
         foodY = (int)(Math.random() * range) + 20;
 
-        snake = new Circle(snakeX, snakeY, 10);
-        snake.setFill(Color.GRAY);
-        food = new Food(foodX, foodY);
-        pane.getChildren().add(snake);
-        pane.getChildren().add(food.getFood());
-        isRunning = true;
-
-        tailPieces.add(new TailPiece());
-        tailPieces.add(new TailPiece());
-        pane.getChildren().add(tailPieces.get(0).getPiece());
-        pane.getChildren().add(tailPieces.get(1).getPiece());
+        initializeFirstComponents();
 
         addKeyHandler();
 
@@ -129,6 +122,8 @@ public class snake extends Application{
                     food.relocateFood();
                     tailPieces.add(new TailPiece());
                     pane.getChildren().add(tailPieces.get(tailPieces.size()-1).getPiece());
+                    score += 100;
+                    scoreText.setText("Score: " + score);
                 }
             });
         timeline.getKeyFrames().add(frame);
@@ -217,6 +212,26 @@ public class snake extends Application{
                 restartGame();
             }
         });
+    }
+
+    public void initializeFirstComponents(){
+        snake = new Circle(snakeX, snakeY, 10);
+        snake.setFill(Color.GRAY);
+        food = new Food(foodX, foodY);
+        pane.getChildren().add(snake);
+        pane.getChildren().add(food.getFood());
+
+        tailPieces.add(new TailPiece());
+        tailPieces.add(new TailPiece());
+        pane.getChildren().add(tailPieces.get(0).getPiece());
+        pane.getChildren().add(tailPieces.get(1).getPiece());
+
+        scoreText = new Text("Score: " + score);
+        scoreText.setFill(Color.GRAY);
+        scoreText.setFont(Font.font("Arial", 25));
+        scoreText.setX(30);
+        scoreText.setY(750);
+        pane.getChildren().add(scoreText);
     }
 
 }
