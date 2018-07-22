@@ -24,7 +24,7 @@ public class Food {
     }
 
     public void relocateFood(){
-        food.relocate((int)(Math.random() * range) + 20, (int)(Math.random() * range) + 20);
+        food.relocate((int)Math.round((Math.random()*(800-1)+1)/10)*10, (int)Math.round((Math.random()*(800-1)+1)/10)*10);
     }
 
 }

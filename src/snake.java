@@ -70,7 +70,7 @@ public class snake extends Application{
 
         addKeyHandler();
 
-        frame = new KeyFrame(Duration.seconds(0.2), event -> movementExec());
+        frame = new KeyFrame(Duration.seconds(0.1), event -> movementExec());
         timeline.getKeyFrames().add(frame);
         timeline.setCycleCount(Timeline.INDEFINITE);
 
@@ -149,10 +149,10 @@ public class snake extends Application{
     private void initializeFirstComponents(){
         score = 0;
         range = (800) + 1;
-        snakeX = (int)(Math.random() * range) + 20;
-        snakeY = (int)(Math.random() * range) + 20;
-        foodX = (int)(Math.random() * range) + 20;
-        foodY = (int)(Math.random() * range) + 20;
+        snakeX = (int)Math.round((Math.random()*(800-1)+1)/10)*10;
+        snakeY = (int)Math.round((Math.random()*(800-1)+1)/10)*10;
+        foodX = (int)Math.round((Math.random()*(800-1)+1)/10)*10;
+        foodY = (int)Math.round((Math.random()*(800-1)+1)/10)*10;
 
         snake = new Circle(snakeX, snakeY, 10);
         snake.setFill(Color.GRAY);
@@ -184,7 +184,6 @@ public class snake extends Application{
             moveTail();
 
             checkIntersect();
-
         } else if (left){
             prevX = (int)snake.getCenterX();
             prevY = (int)snake.getCenterY();
