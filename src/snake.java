@@ -53,12 +53,15 @@ public class snake extends Application{
         window = primaryStage;
         canvas = new Scene(pane(), 800,800);
         window.setScene(canvas);
+        window.setTitle("Snake Game");
         timeline.play();
         window.show();
     }
 
     private Pane pane(){
         pane = new Pane();
+        pane.setMaxWidth(800);
+        pane.setMaxHeight(800);
 
         pane.setStyle("-fx-background-color: black;");
 
@@ -219,6 +222,11 @@ public class snake extends Application{
             pane.getChildren().add(tailPieces.get(tailPieces.size()-1).getPiece());
             score += 100;
             scoreText.setText("Score: " + score);
+        }
+
+        if(snake.getCenterX() >= pane.getMaxWidth() || snake.getCenterX() <= 0 ||
+                snake.getCenterY() >= pane.getMaxHeight() || snake.getCenterY() <= 0){
+            restartGame();
         }
     }
 
