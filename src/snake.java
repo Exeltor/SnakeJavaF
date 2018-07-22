@@ -54,6 +54,7 @@ public class snake extends Application{
         canvas = new Scene(pane(), 800,800);
         window.setScene(canvas);
         window.setTitle("Snake Game");
+        window.setResizable(false);
         timeline.play();
         window.show();
     }
