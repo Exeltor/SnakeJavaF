@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 public class FrameMainMenu extends Application {
@@ -18,7 +19,7 @@ public class FrameMainMenu extends Application {
     Scene canvas, gameScene;
     BorderPane mainBorderPane;
     VBox centerVBox;
-    Button play, exit, test;
+    Button play, exit;
     TitledPane settingsTitledPane;
 
 
@@ -28,7 +29,10 @@ public class FrameMainMenu extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        primaryStage = new Stage(StageStyle.UNDECORATED);
         window = primaryStage;
+        window.setResizable(false);
+
         initComponents();
         canvas = new Scene(mainPane(), 800,800);
         window.setScene(canvas);
@@ -54,7 +58,6 @@ public class FrameMainMenu extends Application {
     public void initComponents(){
         play = new Button("Play");
         exit = new Button("Exit");
-        test = new Button("Test button");
         play.setPrefSize(500, 100);
         exit.setPrefSize(500, 100);
         exit.setOnAction(e -> System.exit(1));
@@ -65,7 +68,6 @@ public class FrameMainMenu extends Application {
         settingsTitledPane.setAnimated(true);
         settingsTitledPane.setCollapsible(true);
         settingsTitledPane.setExpanded(false);
-        settingsTitledPane.setContent(test);
 
     }
 

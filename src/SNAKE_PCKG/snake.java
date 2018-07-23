@@ -2,14 +2,18 @@ package SNAKE_PCKG;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -31,7 +35,7 @@ public class snake{
     int yVelocity = 20;
     int prevX, prevY, range;
     int score = 0;
-    Text scoreText;
+    Text scoreText, gameOverText, descText1, descText2;
 
     ArrayList<TailPiece> tailPieces = new ArrayList<>();
 
@@ -173,7 +177,6 @@ public class snake{
             snakeX-=xVelocity;
             snake.setCenterX(snakeX);
             tailPieces.get(0).moveToNextPos(prevX, prevY);
-
             moveTail();
 
             checkIntersect();
@@ -209,8 +212,33 @@ public class snake{
 
         if(snake.getCenterX() >= pane.getMaxWidth() || snake.getCenterX() <= 0 ||
                 snake.getCenterY() >= pane.getMaxHeight() || snake.getCenterY() <= 0){
-            restartGame();
+            timeline.stop();
+            showGameOver();
         }
+    }
+
+    private void showGameOver(){
+        gameOverText = new Text("Game Over");
+        descText1 = new Text("Press SPACE to restart");
+        descText2 = new Text("Press ESCAPE to exit to Main Menu");
+
+        gameOverText.setFont(Font.font("Arial", 50));
+        descText1.setFont(Font.font("Lucida Console", 20));
+        descText2.setFont(Font.font("Lucida Console", 20));
+
+        gameOverText.setFill(Color.WHITE);
+        gameOverText.setY(200);
+        gameOverText.setX(275);
+
+        descText1.setFill(Color.WHITE);
+        descText1.setY(500);
+        descText1.setX(250);
+
+        descText2.setFill(Color.WHITE);
+        descText2.setY(700);
+        descText2.setX(200);
+
+        pane.getChildren().addAll(gameOverText, descText1, descText2);
     }
 
 }
