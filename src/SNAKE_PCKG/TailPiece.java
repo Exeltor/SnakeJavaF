@@ -1,8 +1,8 @@
-import javafx.geometry.Bounds;
+package SNAKE_PCKG;
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import java.awt.*;
 
 public class TailPiece {
 

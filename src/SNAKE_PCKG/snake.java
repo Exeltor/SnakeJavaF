@@ -1,6 +1,7 @@
+package SNAKE_PCKG;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -9,15 +10,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-public class snake extends Application{
-
-    Stage window;
-    Scene canvas;
+public class snake{
     Pane pane;
 
     Circle snake;
@@ -44,22 +41,7 @@ public class snake extends Application{
 
     Button ctrl;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-        window = primaryStage;
-        canvas = new Scene(pane(), 800,800);
-        window.setScene(canvas);
-        window.setTitle("Snake Game");
-        window.setResizable(false);
-        timeline.play();
-        window.show();
-    }
-
-    private Pane pane(){
+    public Pane pane(){
         pane = new Pane();
         pane.setMaxWidth(800);
         pane.setMaxHeight(800);
@@ -73,6 +55,7 @@ public class snake extends Application{
         frame = new KeyFrame(Duration.seconds(0.1), event -> movementExec());
         timeline.getKeyFrames().add(frame);
         timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         return pane;
     }
