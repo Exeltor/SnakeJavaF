@@ -1,19 +1,30 @@
 package MAINMENU_PCKG;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+
+import java.awt.*;
 
 public class SettingsPane {
 
     private RadioButton setEasy, setMedium, setHard;
-    private VBox panel;
+    private VBox panelLeft;
     private ToggleGroup rbuttons;
+    private BorderPane mainPanel;
 
-    private void initsSettingsPanel(){
-        panel = new VBox();
+    private void initMainPanel(){
+        mainPanel = new BorderPane();
+        mainPanel.setLeft(getPanelLeft());
+    }
 
-        panel.getChildren().addAll(setEasy, setMedium,setHard);
+    private void initLeftPanel(){
+        panelLeft = new VBox();
+
+        Label titleDiff = new Label("Difficulty");
+        panelLeft.getChildren().addAll(titleDiff, setEasy, setMedium,setHard);
 
     }
 
@@ -30,10 +41,15 @@ public class SettingsPane {
         setMedium.setSelected(true);
     }
 
-    public VBox getPanel(){
+    private VBox getPanelLeft(){
         initializeSelectors();
-        initsSettingsPanel();
+        initLeftPanel();
 
-        return panel;
+        return panelLeft;
+    }
+
+    public BorderPane returnMainPane(){
+        initMainPanel();
+        return mainPanel;
     }
 }

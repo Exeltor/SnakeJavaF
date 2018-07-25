@@ -43,7 +43,7 @@ public class FrameMainMenu extends Application {
         mainBorderPane = new BorderPane();
         mainBorderPane.setCenter(centerVBox());
         mainBorderPane.setBottom(settingsTitledPane);
-        settingsTitledPane.setContent(new SettingsPane().getPanel());
+        settingsTitledPane.setContent(new SettingsPane().returnMainPane());
 
         return mainBorderPane;
     }
