@@ -74,5 +74,4 @@ public class SettingsManager {
             System.out.println("No se puede escribir al archivo");
         }
     }
-
 }
