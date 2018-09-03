@@ -76,6 +76,8 @@ public class snake{
                 System.out.println("intersect");
                 timeline.stop();
                 piece.retCircle().setFill(Color.BLUE);
+                timeline.stop();
+                showGameOver();
             }
         }
     }
